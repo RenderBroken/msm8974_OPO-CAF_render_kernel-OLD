@@ -931,7 +931,7 @@ static const struct file_operations wakeup_sources_stats_fops = {
 static struct workqueue_struct *wakelock_dump_wq;
 static struct delayed_work wakelock_dump_worker;
 
-static bool dump_active_wl_enable = true;
+static bool dump_active_wl_enable = false;
 module_param(dump_active_wl_enable, bool, S_IRUGO | S_IWUSR);
 
 static void dump_active_wl(void)
