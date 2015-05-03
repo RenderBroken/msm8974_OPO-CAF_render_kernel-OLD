@@ -997,12 +997,12 @@ static int synaptics_rmi4_f11_abs_report(struct synaptics_rmi4_data *rmi4_data,
 #define SYNA_ONE_FINGER_DIRECTION       0x0a
 #define SYNA_ONE_FINGER_W_OR_M          0x0b
 
-#define KEY_DOUBLE_TAP		249 // double tap to wake
 #define KEY_GESTURE_CIRCLE	250 // draw circle to lunch camera
 #define KEY_GESTURE_TWO_SWIPE	251 // swipe two finger vertically to play/pause
 #define KEY_GESTURE_V		252 // draw v to toggle flashlight
 #define KEY_GESTURE_LEFT_V	253 // draw left arrow for previous track
 #define KEY_GESTURE_RIGHT_V	254 // draw right arrow for next track
+#define KEY_DOUBLE_TAP 		255 // double tap to wake
 #define KEY_F9	67  // M or W
 
 static int enable_gesture_music = 0;
