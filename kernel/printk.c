@@ -756,7 +756,7 @@ static bool printk_time = 0;
 #endif
 module_param_named(time, printk_time, bool, S_IRUGO | S_IWUSR);
 
-static bool print_wall_time = 1;
+static bool print_wall_time = 0;
 module_param_named(print_wall_time, print_wall_time, bool, S_IRUGO | S_IWUSR);
 
 
