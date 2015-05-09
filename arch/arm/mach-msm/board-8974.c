@@ -474,6 +474,45 @@ static int __init boot_mode_init(void)
 /* OPPO 2013-09-03 zhanglong add for add interface start reason and boot_mode end */
 #endif //CONFIG_VENDOR_EDIT
 
+#ifdef CONFIG_VENDOR_EDIT
+#define DISP_ESD_GPIO 28
+
+static void __init oppo_config_display(void)
+{
+	int rc;
+
+	rc = gpio_request(DISP_ESD_GPIO, "disp_esd");
+	if (rc) {
+		pr_err("%s: request DISP_ESD GPIO failed, rc: %d",
+				__func__, rc);
+		goto cfg_disp_err;
+	}
+
+	rc = gpio_tlmm_config(GPIO_CFG(DISP_ESD_GPIO, 0,
+				GPIO_CFG_INPUT,
+				GPIO_CFG_PULL_DOWN,
+				GPIO_CFG_2MA),
+				GPIO_CFG_ENABLE);
+	if (rc) {
+		pr_err("%s: unable to configure DISP_ESD GPIO, rc: %d",
+				__func__, rc);
+		goto cfg_disp_err;
+	}
+
+	rc = gpio_direction_input(DISP_ESD_GPIO);
+	if (rc) {
+		pr_err("%s: set direction for DISP_ESD GPIO failed, rc: %d",
+				__func__, rc);
+		goto cfg_disp_err;
+	}
+
+	return;
+
+cfg_disp_err:
+	gpio_free(DISP_ESD_GPIO);
+}
+#endif //CONFIG_VENDOR_EDIT
+
 static struct memtype_reserve msm8974_reserve_table[] __initdata = {
 	[MEMTYPE_SMI] = {
 	},
@@ -530,6 +569,9 @@ void __init msm8974_add_drivers(void)
 		msm_clock_init(&msm8974_clock_init_data);
 	tsens_tm_init_driver();
 	msm_thermal_device_init();
+#ifdef CONFIG_VENDOR_EDIT
+	oppo_config_display();
+#endif
 }
 
 static struct of_dev_auxdata msm_hsic_host_adata[] = {
