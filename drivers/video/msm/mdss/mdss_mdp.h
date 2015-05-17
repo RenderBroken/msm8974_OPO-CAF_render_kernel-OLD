@@ -229,6 +229,7 @@ struct mdss_mdp_ctl {
 
 	void *priv_data;
 	u32 wb_type;
+	u64 bw_pending;
 };
 
 struct mdss_mdp_mixer {
@@ -490,6 +491,15 @@ static inline struct mdss_mdp_ctl *mdss_mdp_get_split_ctl(
 	return NULL;
 }
 
+static inline void mdss_update_sd_client(struct mdss_data_type *mdata,
+							bool status)
+{
+	if (status)
+		atomic_inc(&mdata->sd_client_count);
+	else
+		atomic_add_unless(&mdss_res->sd_client_count, -1, 0);
+}
+
 static inline void mdss_mdp_ctl_write(struct mdss_mdp_ctl *ctl,
 				      u32 reg, u32 val)
 {
@@ -566,6 +576,7 @@ unsigned long mdss_mdp_get_clk_rate(u32 clk_idx);
 int mdss_mdp_vsync_clk_enable(int enable);
 void mdss_mdp_clk_ctrl(int enable, int isr);
 struct mdss_data_type *mdss_mdp_get_mdata(void);
+int mdss_mdp_secure_display_ctrl(unsigned int enable);
 
 int mdss_mdp_overlay_init(struct msm_fb_data_type *mfd);
 int mdss_mdp_overlay_req_check(struct msm_fb_data_type *mfd,
